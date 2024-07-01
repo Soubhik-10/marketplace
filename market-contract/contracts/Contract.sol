@@ -7,6 +7,7 @@ error Marketplace_Out_Of_Stock();
 error Marketplace_not_your_Order();
 error Marketplace_Wait_30_Days();
 error Marketplace_already_Delivered();
+error Marketplace__not_Your_Item();
 
 contract Marketplace {
     struct Item {
@@ -69,6 +70,11 @@ contract Marketplace {
     //address to ids
     mapping(address => uint256) public getCustomerId;
     mapping(address => uint256) public getSellerId;
+
+    //seller to item and and customer to order mapping
+    mapping(address => uint256[]) public getCustomerOrders;
+    mapping(address => uint256[]) public getSellerItems;
+    mapping(address => uint256[]) public getSellerOrders;
     //arrays for all the structs
     Customer[] customers;
     Seller[] sellers;
@@ -138,7 +144,7 @@ contract Marketplace {
             totalItemOrdered: 0,
             rating: 0
         });
-
+        getSellerItems[msg.sender].push(itemIndex);
         getItemById[itemIndex] = newItem;
         items.push(newItem);
         itemIndex++;
@@ -173,6 +179,8 @@ contract Marketplace {
         orders.push(newOrder);
         // getOrderByCustId[getCustomerId[msg.sender]]=newOrder;
         // getOrderBySellerId[_sellId]=newOrder;
+        getCustomerOrders[msg.sender].push(orderIndex);
+        getSellerOrders[msg.sender].push(orderIndex);
         getOrderById[orderIndex] = newOrder;
         orderIndex++;
 
@@ -216,6 +224,12 @@ contract Marketplace {
             revert Marketplace_Wait_30_Days();
         if (getOrderById[_orderId].isDelivered)
             revert Marketplace_already_Delivered();
+    }
+
+    function addStock(uint256 _itemId, uint256 _stock) public {
+        if (!(getSellerId[msg.sender] == getItemById[_itemId].sellerId))
+            revert Marketplace__not_Your_Item();
+        getItemById[_itemId].stock += _stock;
     }
 
     // read functions

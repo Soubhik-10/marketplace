@@ -1,57 +1,88 @@
-import React from "react";
+import React, { useState } from "react"
+import logo from "../assets/logo.svg"
+import searchLogo from "../assets/search.svg"
+import cart from "../assets/cart.svg"
+import { ConnectButton } from "thirdweb/react"
 
 const Header: React.FC = () => {
+  const [search, setSearch] = useState<boolean>(false)
+
+  const toggleSearch = () => {
+    setSearch(!search)
+  }
+
   return (
-    <div className="w-full h-screen bg-black text-slate-100">
-      <div className="flex flex-row p-2 gap-2 px-5 sticky top-0 z-50">
-        <div className="flex items-center justify-center p-2 w-12 h-12 my-2 ml-2 mr-8">
-          Logo
-        </div>
-        <nav className="flex flex-row gap-8 justify-center p-2 poppins-semibold">
-          <div className="flex flex-row items-center gap-8">
-            <a
-              href="/login"
-              className="block relative text-xl uppercase text-slate-200 hover:text-purple-300"
-            >
-              Shop
-            </a>
-            <a
-              href="/sell"
-              className="block relative text-xl uppercase text-slate-200 hover:text-purple-300"
-            >
-              Sell
-            </a>
-            <a
-              href="/orders"
-              className="block relative text-xl uppercase text-slate-200 hover:text-purple-300"
-            >
-              View Orders
-            </a>
-            <a
-              href="/categories"
-              className="block relative text-xl uppercase text-slate-200 hover:text-purple-300"
-            >
-              Categories
-            </a>
-          </div>
-        </nav>
-        <div className="flex flex-row ml-auto items-center gap-2">
-          <div className="flex items-center justify-center mt-3">Search</div>
-          <input
-            type="text"
-            className="h-6 w-36 p-2 m-2 mt-5 border-none outline-none bg-gray-300 rounded-lg text-black"
-            placeholder="Search..."
+    <div className="flex flex-wrap items-center p-2 gap-4 px-5 sticky top-0 z-50 bg-black bg-opacity-90">
+      <div className="flex items-center justify-center w-16 h-16 my-2 mr-8">
+        <a href="landing">
+          <img
+            src={logo}
+            alt="logo"
+            className="h-14 w-14 hover:rotate-180 transition-transform duration-100"
           />
-          <a
-            href="/login"
-            className="block relative text-xl uppercase text-slate-200 hover:text-purple-300 mt-3 ml-2"
-          >
-            Login
-          </a>
+        </a>
+      </div>
+      <nav className="md:flex flex-col sm:flex-row gap-4 sm:gap-8 justify-center items-center w-full sm:w-auto hidden">
+        <a
+          href="/shop"
+          className="text-lg sm:text-xl text-slate-200 epilogue hover:text-purple-300 transition-colors duration-200"
+        >
+          Shop
+        </a>
+        <a
+          href="/sell"
+          className="text-lg sm:text-xl text-slate-200 epilogue hover:text-purple-300 transition-colors duration-200"
+        >
+          Sell
+        </a>
+        <a
+          href="/orders"
+          className="text-lg sm:text-xl text-slate-200 epilogue hover:text-purple-300 transition-colors duration-200"
+        >
+          View Orders
+        </a>
+        <a
+          href="/categories"
+          className="text-lg sm:text-xl text-slate-200 epilogue hover:text-purple-300 transition-colors duration-200"
+        >
+          Categories
+        </a>
+        <a
+          href="/register"
+          className="text-lg sm:text-xl text-slate-200 epilogue hover:text-purple-300 transition-colors duration-200"
+        >
+          Register
+        </a>
+      </nav>
+      <div className="flex ml-auto items-center gap-4">
+        <div
+          className="flex items-center justify-center cursor-pointer"
+          onClick={toggleSearch}
+        >
+          <img src={searchLogo} alt="search" className="w-6 h-6" />
         </div>
+        <input
+          type="text"
+          className={`h-7 w-36 sm:w-56 p-2 border-none outline-none bg-gray-300 rounded-lg transition-all duration-75 text-black font-semibold ${
+            search ? "block" : "hidden"
+          }`}
+          placeholder="Search..."
+        />
+        <a
+          href="/login"
+          className="text-lg sm:text-xl epilogue text-slate-200 hover:text-purple-300 transition-colors duration-200"
+        >
+          Connect
+        </a>
+        <a
+          href="/cart"
+          className="text-lg sm:text-xl epilogue text-slate-200 hover:text-purple-300 transition-colors duration-200"
+        >
+          <img src={cart} alt="cart" className="w-6 h-6" />
+        </a>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Header;
+export default Header
